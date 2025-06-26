@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Registro vehicular</title>
+    </head>
+    <body>
+        <h2>
+            Formulario para Registrar Vehiculo a la aduana
+        </h2>
+        <form action="save.php" method="POST">
+            <label for="rut_conductor">Rut conductor</label><br>
+            <input type="text" name="rut_conductor" required><br><br>
+
+            <label for="patente">Patente</label><br>
+            <input type="text" name="patente" required><br><br>
+
+            <label for="tipo_vehiculo">Tipo de Vehiculo</label><br>
+            <input type="text" name="tipo_vehiculo" required><br><br>
+
+            <label for="marca">Marca</label><br>
+            <input type="text" name="marca" required><br><br>
+
+            <label for="fecha_retorno">Fecha Retorno</label><br>
+            <input type="text" name="fecha_retorno" required><br><br>
+
+            <input type="submit" value="Send">
+        </form>
+    </body>
+</html>
