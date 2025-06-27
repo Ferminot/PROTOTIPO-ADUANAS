@@ -1,77 +1,248 @@
 <?php
 
-if (!isset($_SESSION['user']) || $_SESSION['tipo_usuario'] !== 'sag') {
+if(!isset($_SESSION['user']) || $_SESSION['tipo_usuario'] !== 'sag'){
     header("Location: ../index.php");
     exit();
 }
+
+$user = new User();
+$user->setUser($_SESSION['user']);
+$nombreUsuario = $user->getNombre();
+
 ?>
 
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8" />
-    <title>Panel SAG - SG-MA</title>
+    <title>Panel Oficial SAG - SG-MA</title>
     <style>
-        body {
+        html, body {
+            height: 100%;
+            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #e0f2f1;
-            color: #004d40;
-            margin: 20px;
-            position: relative;
+            background: linear-gradient(135deg, #d0f0c0, #6bbf59);
+            color: #1a3b1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        body {
             min-height: 100vh;
         }
+        .container {
+            max-width: 720px;
+            width: 90%;
+            text-align: center;
+        }
         header {
-            margin-bottom: 20px;
-            position: relative;
+            margin-bottom: 30px;
         }
         h1 {
-            font-size: 2rem;
-            margin: 0;
+            font-size: 2.4rem;
+            color: #2e7d32; /* Verde fuerte */
+            margin-bottom: 0;
         }
-        .welcome {
-            margin-bottom: 20px;
+        h1 span {
+            display: block;
+            color: #4caf50; /* Verde más claro */
+            font-size: 1.2rem;
+            margin-top: 4px;
         }
-        .action-box {
-            background: #004d40;
-            color: white;
-            padding: 20px;
-            border-radius: 6px;
-            max-width: 600px;
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+        }
+        .action-card {
+            background: #2e7d32; /* Verde fuerte */
+            border-radius: 10px;
+            padding: 25px;
+            flex: 1 1 280px;
+            cursor: pointer;
+            color: #d0f0c0;
+            box-shadow: 0 5px 12px rgba(46,125,50,0.4);
+            transition: box-shadow 0.3s ease, background-color 0.3s ease;
+            user-select: none;
+        }
+        .action-card:hover {
+            box-shadow: 0 8px 20px rgba(76,175,80,0.7);
+            background-color: #4caf50; /* Verde más claro */
+        }
+        .action-card h2 {
+            margin-top: 0;
+            color: #aed581; /* Verde pastel */
+        }
+        .action-card p {
+            font-size: 1rem;
+            color: #c5e1a5;
         }
         a.logout {
-            position: absolute;
-            top: 0;
-            right: 0;
+            position: fixed;
+            top: 20px;
+            right: 20px;
             text-decoration: none;
-            color: #004d40;
+            color: #2e7d32;
             font-weight: bold;
-            border: 1px solid #004d40;
-            padding: 8px 16px;
-            border-radius: 4px;
-            transition: background-color 0.3s, color 0.3s;
+            border: 2px solid #2e7d32;
+            padding: 10px 18px;
+            border-radius: 6px;
+            background-color: #d0f0c0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            z-index: 10;
         }
         a.logout:hover {
-            background-color: #004d40;
+            background-color: #2e7d32;
             color: white;
+            border-color: #2e7d32;
+        }
+        .hidden {
+            display: none;
+            background: #aed581;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #1a3b1a;
+            text-align: left;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #558b2f;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            font-size: 1rem;
+            background-color: #c5e1a5;
+            color: #1a3b1a;
+        }
+        button.submit-btn {
+            margin-top: 12px;
+            background-color: #4caf50;
+            border: none;
+            color: #1a3b1a;
+            padding: 12px 22px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        button.submit-btn:hover {
+            background-color: #81c784;
+            color: #0b2e0b;
         }
     </style>
+    <script>
+        function toggleForm(id) {
+            const form = document.getElementById(id);
+            if(form.style.display === 'block'){
+                form.style.display = 'none';
+            } else {
+                document.querySelectorAll('.hidden').forEach(el => el.style.display = 'none');
+                form.style.display = 'block';
+                form.scrollIntoView({behavior: 'smooth'});
+            }
+        }
+        function submitDemoForm(e) {
+            e.preventDefault();
+            alert('Formulario enviado (demo, no funcional)');
+        }
+    </script>
 </head>
 <body>
+<div class="container">
+    <header>
+        <h1>Bienvenido, Oficial SAG <span><?php echo htmlspecialchars($nombreUsuario); ?></span></h1>
+    </header>
 
-<header>
-    <h1>Bienvenido, Oficial SAG</h1>
-    <a class="logout" href="/PAGINA_ADUANAS/includes/logout.php">Cerrar sesión</a>
-</header>
+    <div class="actions">
+        <div class="action-card" onclick="toggleForm('validacionProductos')">
+            <h2>Validar Productos Agrícolas</h2>
+            <p>Revisa y valida productos para cumplimiento de normativas fitosanitarias.</p>
+        </div>
+        <div class="action-card" onclick="toggleForm('consultarAlertas')">
+            <h2>Consultar Alertas Sanitarias</h2>
+            <p>Consulta alertas y novedades del sistema sobre productos y lugares de riesgo.</p>
+        </div>
+        <div class="action-card" onclick="toggleForm('generarReportes')">
+            <h2>Generar Reportes SAG</h2>
+            <p>Genera informes básicos para control y seguimiento de productos agrícolas.</p>
+        </div>
+        <div class="action-card" onclick="toggleForm('soporteAyuda')">
+            <h2>Soporte y Ayuda</h2>
+            <p>Accede a recursos, guías y preguntas frecuentes para tu trabajo.</p>
+        </div>
+    </div>
 
-<div class="welcome">
-    <p>Este es tu panel principal dentro del sistema SG-MA.</p>
+    <!-- Formularios demo -->
+    <div id="validacionProductos" class="hidden">
+        <h3>Validar Productos Agrícolas</h3>
+        <form onsubmit="submitDemoForm(event)">
+            <div class="form-group">
+                <label for="producto">Producto</label>
+                <input type="text" id="producto" name="producto" placeholder="Nombre del producto" required>
+            </div>
+            <div class="form-group">
+                <label for="lugar">Lugar de Inspección</label>
+                <input type="text" id="lugar" name="lugar" placeholder="Lugar o punto de inspección" required>
+            </div>
+            <div class="form-group">
+                <label for="resultado">Resultado</label>
+                <select id="resultado" name="resultado" required>
+                    <option value="">Seleccione...</option>
+                    <option value="aprobado">Aprobado</option>
+                    <option value="rechazado">Rechazado</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Enviar Validación</button>
+        </form>
+    </div>
+
+    <div id="consultarAlertas" class="hidden">
+        <h3>Consultar Alertas Sanitarias</h3>
+        <p>Listado demo de alertas actuales:</p>
+        <ul>
+            <li>Alerta 001 - Producto X en cuarentena</li>
+            <li>Alerta 002 - Zona Y con riesgo fitosanitario</li>
+            <li>Alerta 003 - Revisión adicional requerida en puerto Z</li>
+        </ul>
+    </div>
+
+    <div id="generarReportes" class="hidden">
+        <h3>Generar Reportes SAG</h3>
+        <form onsubmit="submitDemoForm(event)">
+            <div class="form-group">
+                <label for="tipoReporte">Tipo de Reporte</label>
+                <select id="tipoReporte" name="tipoReporte" required>
+                    <option value="">Seleccione...</option>
+                    <option value="inspecciones">Inspecciones</option>
+                    <option value="incidencias">Incidencias</option>
+                    <option value="estadisticas">Estadísticas</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="descripcionReporte">Descripción</label>
+                <textarea id="descripcionReporte" name="descripcionReporte" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Generar Reporte</button>
+        </form>
+    </div>
+
+    <div id="soporteAyuda" class="hidden">
+        <h3>Soporte y Ayuda</h3>
+        <p>Para más información, contacta a soporte@aduanas.cl o revisa el manual de usuario.</p>
+    </div>
 </div>
 
-<div class="action-box">
-    <h2>Validación de Productos Agrícolas</h2>
-    <p>Accede a las listas actualizadas de productos agrícolas prohibidos y realiza validaciones en tiempo real para asegurar el cumplimiento de la normativa.</p>
-    <p><em>(Esta funcionalidad estará disponible en próximas versiones del sistema.)</em></p>
-</div>
+<a class="logout" href="/PAGINA_ADUANAS/includes/logout.php">Cerrar sesión</a>
 
 </body>
 </html>
