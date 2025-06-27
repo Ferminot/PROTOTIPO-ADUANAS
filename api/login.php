@@ -1,35 +1,28 @@
 <?php
-header("Content-Type: application/json");
+// api.php
 
-include_once '../includes/user.php';
+header('Content-Type: application/json');
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $json = file_get_contents("php://input");
-    $data = json_decode($json, true);
-
-    if (!isset($data['username']) || !isset($data['password'])) {
-        http_response_code(400);
-        echo json_encode(["error" => "Parámetros incompletos"]);
-        exit();
-    }
-
-    $username = $data['username'];
-    $password = $data['password'];
-
-    $user = new User();
-
-    if ($user->userExists($username, $password)) {
-        $tipo = $user->getTipoUsuario($username);
-        echo json_encode([
-            "status" => "success",
-            "usuario" => $username,
-            "tipo_usuario" => $tipo
-        ]);
-    } else {
-        http_response_code(401);
-        echo json_encode(["error" => "Credenciales inválidas"]);
-    }
-} else {
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     http_response_code(405);
-    echo json_encode(["error" => "Método no permitido"]);
+    echo json_encode(['error' => 'Método no permitido']);
+    exit;
 }
+
+include_once '../includes/db.php';
+
+class API extends DB {
+    public function getUsuarios() {
+        $query = $this->connect()->query("SELECT id, nombre, username, tipo_usuario FROM usuarios");
+        $usuarios = [];
+
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+            $usuarios[] = $row;
+        }
+
+        return $usuarios;
+    }
+}
+
+$api = new API();
+echo json_encode($api->getUsuarios());

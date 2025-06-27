@@ -46,7 +46,8 @@ if(isset($_SESSION['user'])){
 
     // Obtener tipo de usuario
     $tipo = $user->getTipoUsuario($userForm);
-
+    $_SESSION['tipo_usuario'] = $tipo;
+    $_SESSION['nombre_usuario'] = $user->getNombre();
     // Redirigir según tipo
     switch($tipo){
         case 'cliente':
