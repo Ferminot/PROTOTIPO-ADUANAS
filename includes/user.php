@@ -33,11 +33,17 @@ class User extends DB{
     }
 
     public function getTipoUsuario($user){
-        $query = $this->connect()->prepare('SELECT tipo_usuario FROM usuarios WHERE username = :user');
-        $query->execute(['user' => $user]);
-        $row = $query->fetch();
+    $query = $this->connect()->prepare('SELECT tipo_usuario FROM usuarios WHERE username = :user');
+    $query->execute(['user' => $user]);
+    $row = $query->fetch();
+
+    if ($row && isset($row['tipo_usuario'])) {
         return $row['tipo_usuario'];
+    } else {
+        return null; // o false, o lanzar excepción si prefieres
+    }
 }
+
 }
 
 ?>

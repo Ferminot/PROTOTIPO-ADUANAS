@@ -1,10 +1,11 @@
 <?php
+session_start(); // Asegúrate de que la sesión esté iniciada
 
-    include_once 'user_session.php';
+include_once 'user_session.php';
 
-    $userSession = new UserSession();
-    $userSession->closeSession();
+$userSession = new UserSession();
+$userSession->closeSession();
 
-    header("location: ../index.php");
-
+header("Location: ../index.php");
+exit();
 ?>

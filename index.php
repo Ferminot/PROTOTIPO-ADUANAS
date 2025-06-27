@@ -1,4 +1,5 @@
 <?php
+
 include_once 'includes/user.php';
 include_once 'includes/user_session.php';
 
@@ -24,8 +25,8 @@ if(isset($_SESSION['user'])){
         case 'agente':
             include_once 'vistas/home_agente.php';
             break;
-        case 'editor':
-            include_once 'vistas/home_editor.php';
+        case 'sag':
+            include_once 'vistas/home_sag.php';
             break;
         default:
             $errorLogin = "Tipo de usuario no reconocido";
@@ -53,8 +54,8 @@ if(isset($_SESSION['user'])){
         case 'agente':
             include_once 'vistas/home_agente.php';
             break;
-        case 'editor':
-            include_once 'vistas/home_editor.php';
+        case 'sag':
+            include_once 'vistas/home_sag.php';
             break;
         default:
             $errorLogin = "Tipo de usuario no reconocido";
