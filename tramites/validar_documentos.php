@@ -75,6 +75,6 @@ $tramites = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php endif; ?>
 
     <br><br>
-    <a href="../home_agente.php">Volver al panel</a>
+    <a href="../vistas/home_agente.php">Volver al panel</a>
 </body>
 </html>

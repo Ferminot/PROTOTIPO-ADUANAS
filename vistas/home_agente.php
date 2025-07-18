@@ -133,18 +133,18 @@ $user->setUser($_SESSION['user']);
     <h1>Bienvenido, Agente de Aduanas <?php echo htmlspecialchars($user->getNombre()); ?></h1>
 </header>
 <div class="actions">
-    <div class="action-card" id="validarDocumentosBtn">
+    <a class="action-card" href="tramites/validar_documentos.php">
         <h2>Validar Documentos</h2>
         <p>Revisa y aprueba los documentos.</p>
-    </div>
-    <div class="action-card">
+    </a>
+    <a class="action-card" href="alertas/ver_alertas.php">
         <h2>Revisar Alertas</h2>
         <p>Consulta alertas sobre riesgos.</p>
-    </div>
-    <div class="action-card" id="generarInformesBtn">
+    </a>
+    <a class="action-card" href="informes/generar_informes.php">
         <h2>Generar Informes</h2>
         <p>Reportes sobre flujos y alertas.</p>
-    </div>
+    </a>
 </div>
 <a class="logout" href="/PAGINA_ADUANAS/includes/logout.php">Cerrar sesión</a>
 
