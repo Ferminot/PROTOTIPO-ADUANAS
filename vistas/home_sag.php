@@ -164,17 +164,14 @@ $nombreUsuario = $user->getNombre();
     </header>
 
     <div class="actions">
-        <div class="action-card" onclick="toggleForm('validacionProductos')">
-            <h2>Validar Productos Agrícolas</h2>
-            <p>Revisa y valida productos para cumplimiento de normativas fitosanitarias.</p>
-        </div>
-        <div class="action-card" onclick="toggleForm('consultarAlertas')">
+        
+        <div class="action-card" onclick="window.location.href='alertas/gestionar_alertas.php'">
             <h2>Consultar Alertas Sanitarias</h2>
-            <p>Consulta alertas y novedades del sistema sobre productos y lugares de riesgo.</p>
+            <p>Consulta alertas y bórralas si es necesario.</p>
         </div>
-        <div class="action-card" onclick="toggleForm('generarReportes')">
-            <h2>Generar Reportes SAG</h2>
-            <p>Genera informes básicos para control y seguimiento de productos agrícolas.</p>
+        <div class="action-card" onclick="toggleForm('emitirAlerta')">
+            <h2>Emitir Alerta Sanitaria</h2>
+            <p>Envía una alerta fitosanitaria para informar a aduanas de riesgos detectados.</p>
         </div>
         <div class="action-card" onclick="toggleForm('soporteAyuda')">
             <h2>Soporte y Ayuda</h2>
@@ -216,25 +213,17 @@ $nombreUsuario = $user->getNombre();
         </ul>
     </div>
 
-    <div id="generarReportes" class="hidden">
-        <h3>Generar Reportes SAG</h3>
-        <form onsubmit="submitDemoForm(event)">
+    <div id="emitirAlerta" class="hidden">
+        <h3>Emitir Alerta Sanitaria</h3>
+        <form method="POST" action="sag/emitir_alerta_sag.php">
             <div class="form-group">
-                <label for="tipoReporte">Tipo de Reporte</label>
-                <select id="tipoReporte" name="tipoReporte" required>
-                    <option value="">Seleccione...</option>
-                    <option value="inspecciones">Inspecciones</option>
-                    <option value="incidencias">Incidencias</option>
-                    <option value="estadisticas">Estadísticas</option>
-                </select>
+                <label for="mensaje">Mensaje de la Alerta</label>
+                <textarea id="mensaje" name="mensaje" rows="4" placeholder="Describe la alerta fitosanitaria..." required></textarea>
             </div>
-            <div class="form-group">
-                <label for="descripcionReporte">Descripción</label>
-                <textarea id="descripcionReporte" name="descripcionReporte" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="submit-btn">Generar Reporte</button>
+            <button type="submit" class="submit-btn">Emitir Alerta</button>
         </form>
     </div>
+
 
     <div id="soporteAyuda" class="hidden">
         <h3>Soporte y Ayuda</h3>
