@@ -201,17 +201,13 @@ $nombreUsuario = $user->getNombre();
     </header>
 
     <div class="actions">
-        <div class="action-card" onclick="toggleForm('estadoTramites')">
+        <div class="action-card" onclick="window.location.href='tramites/ver_estado_tramites.php'">
             <h2>Ver Estado de Trámites</h2>
             <p>Consulta en qué estado se encuentran tus solicitudes y trámites aduaneros.</p>
         </div>
         <div class="action-card" onclick="toggleForm('solicitarTramite')">
             <h2>Solicitar Nuevo Trámite</h2>
             <p>Inicia una nueva solicitud de trámite con los datos necesarios.</p>
-        </div>
-        <div class="action-card" onclick="toggleForm('consultarDocumentos')">
-            <h2>Consultar Documentos Adjuntos</h2>
-            <p>Visualiza y descarga documentos relacionados a tus trámites.</p>
         </div>
         <div class="action-card" onclick="toggleForm('soporteAyuda')">
             <h2>Soporte y Ayuda</h2>
@@ -236,7 +232,7 @@ $nombreUsuario = $user->getNombre();
 
     <div id="solicitarTramite" class="hidden">
         <h3>Solicitar Nuevo Trámite</h3>
-        <form onsubmit="event.preventDefault(); alert('Formulario demo enviado');">
+        <form id="formSolicitarTramite">
             <div class="form-group">
                 <label for="tipoTramite">Tipo de Trámite</label>
                 <select id="tipoTramite" name="tipoTramite" required>
@@ -252,6 +248,8 @@ $nombreUsuario = $user->getNombre();
             </div>
             <button type="submit" class="submit-btn">Enviar Solicitud</button>
         </form>
+        <div id="mensajeTramite" style="margin-top: 10px;"></div>
+
     </div>
 
     <div id="consultarDocumentos" class="hidden">
@@ -302,6 +300,37 @@ $nombreUsuario = $user->getNombre();
 </div>
 
 <a class="logout" href="/PAGINA_ADUANAS/includes/logout.php">Cerrar sesión</a>
+<script>
+document.getElementById('formSolicitarTramite').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const tipoTramite = document.getElementById('tipoTramite').value;
+    const descripcion = document.getElementById('descripcion').value;
+    const mensajeDiv = document.getElementById('mensajeTramite');
+
+    try {
+        const response = await fetch('/PAGINA_ADUANAS/tramites/guardar_tramite.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tipoTramite, descripcion })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            mensajeDiv.style.color = 'lightgreen';
+            mensajeDiv.textContent = result.message;
+            e.target.reset();
+        } else {
+            mensajeDiv.style.color = 'lightcoral';
+            mensajeDiv.textContent = result.error || 'Error inesperado';
+        }
+    } catch (error) {
+        mensajeDiv.style.color = 'lightcoral';
+        mensajeDiv.textContent = 'Error al conectar con el servidor.';
+    }
+});
+</script>
 
 </body>
 </html>
