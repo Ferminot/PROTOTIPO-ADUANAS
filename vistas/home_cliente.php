@@ -1,6 +1,4 @@
 <?php
-
-
 if(!isset($_SESSION['user']) || $_SESSION['tipo_usuario'] !== 'cliente'){
     header("Location: ../index.php");
     exit();
@@ -132,6 +130,40 @@ $nombreUsuario = $user->getNombre();
             background-color: #99ccff;
             color: #001a33;
         }
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            z-index: 20;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: #004080;
+            padding: 25px 30px;
+            border-radius: 12px;
+            max-width: 460px;
+            width: 100%;
+            color: #cce6ff;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        }
+        .close {
+            color: #99ccff;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-content label {
+            color: #99ccff;
+        }
     </style>
     <script>
         function toggleForm(id) {
@@ -145,9 +177,19 @@ $nombreUsuario = $user->getNombre();
                 form.scrollIntoView({behavior: 'smooth'});
             }
         }
-        function submitDemoForm(e) {
-            e.preventDefault();
-            alert('Formulario enviado (demo, no funcional)');
+
+        // Modal control for Registro Vehículo
+        function showModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+        window.onclick = function(event) {
+            const modal = document.getElementById('modalRegistrarVehiculo');
+            if(event.target === modal) {
+                modal.style.display = 'none';
+            }
         }
     </script>
 </head>
@@ -156,7 +198,6 @@ $nombreUsuario = $user->getNombre();
     <header>
         <h1>Bienvenido, Cliente</h1>
         <p style="color: #99ccff; font-size: 1.2rem; margin-top: -10px;"><?php echo htmlspecialchars($nombreUsuario); ?></p>
-
     </header>
 
     <div class="actions">
@@ -176,6 +217,10 @@ $nombreUsuario = $user->getNombre();
             <h2>Soporte y Ayuda</h2>
             <p>Accede a recursos, guías y preguntas frecuentes.</p>
         </div>
+        <div class="action-card" onclick="showModal('modalRegistrarVehiculo')">
+            <h2>Registrar Vehículo</h2>
+            <p>Registra vehículos que necesites para tus trámites.</p>
+        </div>
     </div>
 
     <!-- Formularios demo -->
@@ -191,7 +236,7 @@ $nombreUsuario = $user->getNombre();
 
     <div id="solicitarTramite" class="hidden">
         <h3>Solicitar Nuevo Trámite</h3>
-        <form onsubmit="submitDemoForm(event)">
+        <form onsubmit="event.preventDefault(); alert('Formulario demo enviado');">
             <div class="form-group">
                 <label for="tipoTramite">Tipo de Trámite</label>
                 <select id="tipoTramite" name="tipoTramite" required>
@@ -222,6 +267,37 @@ $nombreUsuario = $user->getNombre();
     <div id="soporteAyuda" class="hidden">
         <h3>Soporte y Ayuda</h3>
         <p>Para más información, contacta a soporte@aduanas.cl o revisa el manual de usuario.</p>
+    </div>
+</div>
+
+<!-- Modal Registro de Vehículo -->
+<div id="modalRegistrarVehiculo" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal('modalRegistrarVehiculo')">&times;</span>
+        <h3>Registro de Vehículo</h3>
+        <form action="/PAGINA_ADUANAS/registro_vehiculos/save.php" method="POST">
+            <div class="form-group">
+                <label for="rut_conductor">RUT del Conductor:</label>
+                <input type="text" name="rut_conductor" id="rut_conductor" required>
+            </div>
+            <div class="form-group">
+                <label for="patente">Patente:</label>
+                <input type="text" name="patente" id="patente" required>
+            </div>
+            <div class="form-group">
+                <label for="tipo_vehiculo">Tipo de Vehículo:</label>
+                <input type="text" name="tipo_vehiculo" id="tipo_vehiculo" required>
+            </div>
+            <div class="form-group">
+                <label for="marca">Marca:</label>
+                <input type="text" name="marca" id="marca" required>
+            </div>
+            <div class="form-group">
+                <label for="fecha_retorno">Fecha de Retorno:</label>
+                <input type="date" name="fecha_retorno" id="fecha_retorno" required>
+            </div>
+            <button type="submit" class="submit-btn">Registrar Vehículo</button>
+        </form>
     </div>
 </div>
 

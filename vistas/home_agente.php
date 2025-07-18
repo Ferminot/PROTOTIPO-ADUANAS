@@ -145,12 +145,9 @@ $user->setUser($_SESSION['user']);
         <h2>Generar Informes</h2>
         <p>Reportes sobre flujos y alertas.</p>
     </div>
-    <div class="action-card" id="registrarVehiculoBtn">
-        <h2>Registrar Vehículo</h2>
-        <p>Registrar vehículos que cruzan la frontera.</p>
-    </div>
 </div>
 <a class="logout" href="/PAGINA_ADUANAS/includes/logout.php">Cerrar sesión</a>
+
 <!-- Modals -->
 <div id="modalValidar" class="modal" style="display:none;">
   <div class="modal-content">
@@ -167,6 +164,7 @@ $user->setUser($_SESSION['user']);
     </form>
   </div>
 </div>
+
 <div id="modalInformes" class="modal" style="display:none;">
   <div class="modal-content">
     <span class="close" data-modal="modalInformes">&times;</span>
@@ -187,29 +185,10 @@ $user->setUser($_SESSION['user']);
     </form>
   </div>
 </div>
-<div id="modalRegistrarVehiculo" class="modal" style="display:none;">
-  <div class="modal-content">
-    <span class="close" data-modal="modalRegistrarVehiculo">&times;</span>
-    <h3>Registro de Vehículo</h3>
-    <form action="/PAGINA_ADUANAS/registro_vehiculos/save.php" method="POST">
-      <label for="rut_conductor">RUT del Conductor:</label>
-      <input type="text" name="rut_conductor" required><br><br>
-      <label for="patente">Patente:</label>
-      <input type="text" name="patente" required><br><br>
-      <label for="tipo_vehiculo">Tipo de Vehículo:</label>
-      <input type="text" name="tipo_vehiculo" required><br><br>
-      <label for="marca">Marca:</label>
-      <input type="text" name="marca" required><br><br>
-      <label for="fecha_retorno">Fecha de Retorno:</label>
-      <input type="date" name="fecha_retorno" required><br><br>
-      <button type="submit">Registrar</button>
-    </form>
-  </div>
-</div>
+
 <script>
   document.getElementById('validarDocumentosBtn').onclick = () => document.getElementById('modalValidar').style.display = 'flex';
   document.getElementById('generarInformesBtn').onclick = () => document.getElementById('modalInformes').style.display = 'flex';
-  document.getElementById('registrarVehiculoBtn').onclick = () => document.getElementById('modalRegistrarVehiculo').style.display = 'flex';
   document.querySelectorAll('.close').forEach(el => el.onclick = () => document.getElementById(el.dataset.modal).style.display = 'none');
   window.onclick = e => { if (e.target.classList.contains('modal')) e.target.style.display = 'none'; };
 </script>

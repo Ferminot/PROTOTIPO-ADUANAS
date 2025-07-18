@@ -1,9 +1,11 @@
 <?php
 
-class UserSession{
+class UserSession {
 
     public function __construct(){
-        session_start();
+        if(session_status() === PHP_SESSION_NONE){
+            session_start();
+        }
     }
 
     public function setCurrentUser($user){
@@ -11,12 +13,14 @@ class UserSession{
     }
 
     public function getCurrentUser(){
-        return $_SESSION['user'];
+        return isset($_SESSION['user']) ? $_SESSION['user'] : null;
     }
 
     public function closeSession(){
-        session_unset();
-        session_destroy();
+        if(session_status() !== PHP_SESSION_NONE){
+            session_unset();
+            session_destroy();
+        }
     }
 }
 
